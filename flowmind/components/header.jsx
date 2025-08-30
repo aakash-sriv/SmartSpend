@@ -6,7 +6,12 @@ const Header = () => {
   return <div className="fixed top-0">
     <nav>
       <Link href="/">
-        <Image />
+        <Image src= {""}
+        alt=""
+        height={60}
+        width={200}
+        className=""
+        />
       </Link>
     </nav>
 
