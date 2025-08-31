@@ -1,27 +1,30 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+ 
 
 const Header = () => {
-  return <div className="fixed top-0">
-    <nav>
+  return <div className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
+    <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
       <Link href="/">
-        <Image src= {""}
-        alt=""
+        <Image 
+        src= {"/logo.jpg"}
+        alt="FlowMind logo"
         height={60}
         width={200}
-        className=""
+        className="h-12 w-auto object-contain"
         />
       </Link>
+    
+
+
+      <SignedOut>
+          <SignInButton />
+      </SignedOut>
+      <SignedIn>
+          <UserButton />
+      </SignedIn>
     </nav>
-
-
-    <SignedOut>
-        <SignInButton />
-    </SignedOut>
-    <SignedIn>
-        <UserButton />
-    </SignedIn>
   </div> 
 };
 
