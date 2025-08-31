@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
  
 
 const Header = () => {
@@ -15,11 +16,11 @@ const Header = () => {
         className="h-12 w-auto object-contain"
         />
       </Link>
-    
-
-
+      
       <SignedOut>
-          <SignInButton />
+          <SignInButton forceRedirectUrl="/dashboard">
+            <Button variant="outline">Login</Button>
+          </SignInButton>
       </SignedOut>
       <SignedIn>
           <UserButton />
