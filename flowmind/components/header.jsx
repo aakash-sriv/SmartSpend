@@ -17,14 +17,16 @@ const Header = () => {
         />
       </Link>
       
-      <SignedOut>
-          <SignInButton forceRedirectUrl="/dashboard">
-            <Button variant="outline">Login</Button>
-          </SignInButton>
-      </SignedOut>
-      <SignedIn>
-          <UserButton />
-      </SignedIn>
+      <div>
+        <SignedOut>
+            <SignInButton forceRedirectUrl="/dashboard">
+              <Button variant="outline">Login</Button>
+            </SignInButton>
+        </SignedOut>
+        <SignedIn>
+            <UserButton />
+        </SignedIn>
+      </div>
     </nav>
   </div> 
 };
