@@ -102,7 +102,6 @@ export default function Home() {
           </Button>
         </Link>
       </div>
-    </section>
-    
+    </section>    
   </div>
 }
