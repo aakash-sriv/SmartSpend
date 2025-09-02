@@ -8,7 +8,6 @@ import { useEffect, useRef } from "react";
 
 
 const HeroSection = () => {
-
   const imageRef = useRef()
 
   useEffect(() => {
@@ -23,8 +22,10 @@ const HeroSection = () => {
       } else {
         imageElement.classList.remove("scrolled");
       }
-    }
-  })
+    };
+    window.addEventListener("scroll" , handleScroll);
+    return () => window.removeEventListener("scroll" , handleScroll);
+  } , []);
 
   return (
     <div className="pb-20 px-4">
