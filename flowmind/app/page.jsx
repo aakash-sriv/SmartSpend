@@ -86,7 +86,7 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="py-20 bg-blue-400">
+    <section className="py-20 bg-blue-300">
       <div className="container mx-auto text-center px-4">
         <h2 className="text-3xl font-bold text-white mb-4">Ready To take Control of your Finances?</h2>
         <p className="text-blue-50 mb-8 max-w-2xl mx-auto">
