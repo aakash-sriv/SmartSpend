@@ -100,3 +100,4 @@ enum RecurringInterval {
   MONTHLY
   YEARLY
 }
+
