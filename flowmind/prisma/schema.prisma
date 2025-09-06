@@ -39,6 +39,11 @@ model Account {
   @@map("accounts")
 }
 
+enum AccountType {
+  CURRENT
+  SAVINGS
+}
+
 model Transaction {
   id                String            @id @default(uuid())
   type             TransactionType
@@ -64,6 +69,23 @@ model Transaction {
   @@map("transactions")
 }
 
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum RecurringInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
 
 model Budget {
   id          String       @id @default(uuid())
@@ -76,28 +98,5 @@ model Budget {
 
   @@index([userId])
   @@map("budgets")
-}
-
-enum TransactionType {
-  INCOME
-  EXPENSE
-}
-
-enum AccountType {
-  CURRENT
-  SAVINGS
-}
-
-enum TransactionStatus {
-  PENDING
-  COMPLETED
-  FAILED
-}
-
-enum RecurringInterval {
-  DAILY
-  WEEKLY
-  MONTHLY
-  YEARLY
 }
 
