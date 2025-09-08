@@ -20,8 +20,8 @@ const Header = async() => {
         />
       </Link>      
 
-      <div className="flex items-center space-x-4">
-        <SignedIn>
+      <div className="flex items-center space-x-4 cursor-pointer">
+        <SignedIn className="cursor-pointer">
           <Link href={"/dashboard"} className="text-gray-600 hover:text-blue-600 flex items-center gap-2 cursor-pointer">
             <Button variant="outline">
               <LayoutDashboard size={18} />
@@ -31,7 +31,7 @@ const Header = async() => {
 
           <Link href={"/transaction/create"}>
             <Button className="flex items-center gap-2 ">
-              <PenBox size={18} />
+              <PenBox size={18} alt={"transaction"} />
               <span className="hidden md:inline cursor-pointer">Add Transaction</span>
             </Button>
           </Link>

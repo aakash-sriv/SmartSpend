@@ -7,13 +7,16 @@ const CreateAccountDrawer = ({children}) => {
     const [open , setOpen ] = useState(false);
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger>{children}</DrawerTrigger>
+        <DrawerTrigger asChild>{children}</DrawerTrigger>
         <DrawerContent>
             <DrawerHeader>
                 <DrawerTitle>
-                    open
+                    Create New Account
                 </DrawerTitle>
             </DrawerHeader>
+            <div>
+                <form></form>
+            </div>
         </DrawerContent>
     </Drawer>
   )
