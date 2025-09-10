@@ -78,9 +78,7 @@ const CreateAccountDrawer = ({children}) => {
                                 <SelectItem value ="SAVINGS">Savings</SelectItem>
                             </SelectContent>
                         </Select>
-                        {errors.name && (
-                            <p className='text-sm text-red-600'>{errors.name.message}</p>
-                        )}
+                        
                     </div>
 
                     <div className='space-y-2'>
@@ -112,7 +110,7 @@ const CreateAccountDrawer = ({children}) => {
                         />                        
                     </div>
 
-                    <div>
+                    <div className='flex justify-items-start pt-4 gap-12'>
                         <DrawerClose asChild>
                             <Button type="button" variant="outline" className="flex-1">
                                 Cancel
