@@ -62,6 +62,7 @@ export async function createAccount(data) {
     } catch (error) {
         throw new Error(error.message);
     }
+    
 }
 
 export async function getUserAccounts(){
