@@ -71,7 +71,7 @@ export async function getAccountWithTransactions(accountId){
         where: { id: accountId , userId : user.id },
         include: {
             transactions:{
-                orderBy: { data: "desc" },
+                orderBy: { date : "desc" },
             },
             _count: {
                 select: { transactions : true },
