@@ -2,9 +2,13 @@
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { format } from 'date-fns/format';
 import React from 'react'
+import { fi } from 'zod/v4/locales';
 
 const Transactiontable = ({transactions}) => {
+
+    const filteredAndSortedTransactions = transactions;
 
     const handleSort = () => {
 
@@ -51,12 +55,27 @@ const Transactiontable = ({transactions}) => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow>
-                        <TableCell className="font-medium">INV001</TableCell>
-                        <TableCell>Paid</TableCell>
-                        <TableCell>Credit Card</TableCell>
-                        <TableCell className="text-right">₹250.00</TableCell>
-                    </TableRow>
+                    {filteredAndSortedTransactions.length === 0 ?(
+                        <TableRow>
+                            <TableCell colSpan={7} className="text-center text-muted-foreground">
+                                No Transactions Found.
+                            </TableCell>
+                        </TableRow>
+                ) : (      
+                    filteredAndSortedTransactions.map((transaction) => (
+                        <TableRow key={transaction.id}>         
+                            <TableCell>
+                                <Checkbox />
+                            </TableCell>
+                            <TableCell>
+                                {format(new Date(transaction.date) , "pp")}
+                            </TableCell>
+                            <TableCell>{transaction.description}</TableCell>
+                            <TableCell>{transaction.category}</TableCell>
+                            <TableCell className="text-right">₹250.00</TableCell>
+                        </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
         </div>
