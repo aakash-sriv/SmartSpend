@@ -2,6 +2,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { categoryColors } from '@/data/categories';
 import { format } from 'date-fns/format';
 import React from 'react'
 import { fi } from 'zod/v4/locales';
@@ -71,7 +72,14 @@ const Transactiontable = ({transactions}) => {
                                 {format(new Date(transaction.date) , "pp")}
                             </TableCell>
                             <TableCell>{transaction.description}</TableCell>
-                            <TableCell>{transaction.category}</TableCell>
+                            <TableCell className={`capitalize`}>
+                                <span style={{
+                                    backgroundColor: categoryColors[transaction.category],
+                                    }}
+                                    className='px-2 py-1 rounded text-white text-sm'>
+                                    {transaction.category}
+                                </span>                               
+                            </TableCell>
                             <TableCell className="text-right">₹250.00</TableCell>
                         </TableRow>
                         ))
