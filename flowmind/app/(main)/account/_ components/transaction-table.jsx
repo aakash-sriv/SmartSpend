@@ -8,7 +8,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { categoryColors } from '@/data/categories';
 import { format } from 'date-fns/format';
-import { Clock, MoreHorizontal, RefreshCw } from 'lucide-react';
+import { ChevronDown, ChevronUp, Clock, MoreHorizontal, RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { fi } from 'zod/v4/locales';
@@ -24,10 +24,20 @@ const Transactiontable = ({transactions}) => {
 
     const router = useRouter();
 
+    const [selectedIds , setSelectedIds] = useState([]);
+    const [sortConfig , setSortConfig] = useState({
+        field: "date",
+        direction: "desc",
+    });
+
     const filteredAndSortedTransactions = transactions;
 
-    const handleSort = () => {
-
+    const handleSort = (field) => {
+        setSortConfig((current) => ({
+            field,
+            direction: 
+                current.field === field && current.direction === "asc" ? "desc" : "asc",
+        }));
     };
 
 
@@ -48,7 +58,14 @@ const Transactiontable = ({transactions}) => {
                             className="cursor-pointer"
                             onClick={() => handleSort("date")}
                         >
-                            <div className='flex items-center'>Date</div>
+                            <div className='flex items-center'>Date {sortConfig.field === 'date' && (
+                                sortConfig.direction === 'asc' ? (
+                                <ChevronUp className='ml-2 h-4 w-4'/>
+                                 ) : (
+                                 <ChevronDown className='ml-2 h-4 w-4'/>
+                                 )
+                                )}
+                            </div>
                         </TableHead>
                         <TableHead>Description</TableHead>
                         <TableHead 
@@ -142,14 +159,16 @@ const Transactiontable = ({transactions}) => {
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent>
                                         <DropdownMenuLabel
-                                            onClick={() => 
+                                            onClick = {() => 
                                             router.push(`/transaction/create?edit=${transaction.id}`
                                              )}
                                         >     
                                             Edit
                                         </DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem className={`text-destructive`}>
+                                        <DropdownMenuItem className={`text-destructive`}
+                                            // onClick = {() => deleteFn([transaction.id])}
+                                        >
                                             Delete
                                         </DropdownMenuItem>                                        
                                     </DropdownMenuContent>
