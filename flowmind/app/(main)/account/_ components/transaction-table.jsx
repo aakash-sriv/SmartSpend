@@ -67,7 +67,9 @@ const Transactiontable = ({transactions}) => {
     //         : filteredAndSortedTransactions.map((transaction) => transaction.id)    
     //     );
     // };
+    const handleBulkDelete = () => {
 
+    };
 
   return (
     <div className='space-y-4'>
@@ -106,8 +108,13 @@ const Transactiontable = ({transactions}) => {
                 </Select>
                 {selectedIds.length > 0 && (
                     <div>
-                        <Button>Delete Selected ({selectedIds.length})</Button>
-                        
+                        <Button 
+                            variant={`destructive`}
+                            size="sm"
+                            onClick={handleBulkDelete}
+                        >
+                            Delete Selected ({selectedIds.length})
+                        </Button>                        
                     </div>
                 )}
             </div>
