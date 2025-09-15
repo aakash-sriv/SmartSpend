@@ -86,3 +86,33 @@ export async function getAccountWithTransactions(accountId){
         transactions: account.transactions.map(serializeTransaction),
     }
 }
+
+
+export async function bulkDeleteTransactions(transactionIds) {
+    try {
+        const {userId} = await auth();
+
+        if(!userId) throw new Error("Unauthorized");
+
+        const user = await db.user.findUnique({
+            where: { clerkUserId: userId},
+        });
+
+        if(!user) {
+            throw new Error("User not found")
+        }
+
+        const transactions = await db.transaction.findMany({
+            where: { 
+                id: {in : transactionIds},
+                userId : user.id ,
+            },
+        });
+        const accountBalanceChanges = transactionIds.reduce((acc , transaction) => {
+            
+        })
+
+    } catch (error) {
+        
+    }
+}

@@ -11,9 +11,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { categoryColors } from '@/data/categories';
 import { format } from 'date-fns/format';
 import { se } from 'date-fns/locale/se';
-import { ChevronDown, ChevronUp, Clock, MoreHorizontal, RefreshCw, Search } from 'lucide-react';
+import { ChevronDown, ChevronUp, Clock, MoreHorizontal, RefreshCw, Search, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
+import { set } from 'zod';
 import { fi } from 'zod/v4/locales';
 
 const RECURRING_INTERVALS = { 
@@ -39,7 +40,60 @@ const Transactiontable = ({transactions}) => {
     const[typeFilter ,setTypeFilter ] = useState("");
     const[recurringFilter , setRecurringFilter] = useState("");
 
-    const filteredAndSortedTransactions = transactions;
+
+    const filteredAndSortedTransactions = useMemo(() => {
+        let result = [...transactions];
+
+        //Apply search filter
+        if(searchTerm){
+            const searchLower = searchTerm.toLowerCase();
+            result = result.filter((transaction) => 
+                transaction.description?.toLowerCase().includes(searchLower) ||
+                transaction.category?.toLowerCase().includes(searchLower)
+            );
+        }
+
+        //Apply recurring filter
+        if(recurringFilter){
+            result = result.filter((transaction) =>{
+                if(recurringFilter === "recurring") return transaction.isRecurring;
+                return !transaction.isRecurring;
+            });
+        }
+          
+        //Apply type filter
+        if(typeFilter){
+            result = result.filter((transaction) => transaction.type === typeFilter);
+        }
+        //Apply sorting
+        result.sort((a,b)=> {
+            let comparison = 0;
+
+            switch(sortConfig.field){
+                case "date":
+                    comparison = new Date(a.date) - new Date(b.date);   
+                    break;
+                case "amount":
+                    comparison = a.amount - b.amount;
+                    break;
+                case "category":
+                    comparison = a.category.localeCompare(b.category);
+                    break;
+                default:
+                    comparison = 0;                    
+            }
+            return sortConfig.direction === "asc" ? comparison : -comparison;
+        });
+
+        return result;
+    }, [
+        transactions, 
+        searchTerm, 
+        typeFilter, 
+        recurringFilter , 
+        sortConfig
+    ]);
+
 
     const handleSort = (field) => {
         setSortConfig((current) => ({
@@ -69,6 +123,14 @@ const Transactiontable = ({transactions}) => {
     // };
     const handleBulkDelete = () => {
 
+    };
+
+
+    const handleClearFilters = () => {
+        setSearchTerm("");
+        setTypeFilter("");
+        setRecurringFilter("");
+        setSelectedIds([]);
     };
 
   return (
@@ -113,18 +175,27 @@ const Transactiontable = ({transactions}) => {
                             size="sm"
                             onClick={handleBulkDelete}
                         >
+                            <Trash className='h-4 w-4 mr-2' />
                             Delete Selected ({selectedIds.length})
                         </Button>                        
                     </div>
+                )}
+
+                {(searchTerm || typeFilter || recurringFilter) && (
+                    <Button 
+                        variant={`ghost`}
+                        size="icon"
+                        onClick={handleClearFilters}
+                        title = "Clear filters"
+                    >
+                    <X className="h-4 w-5"></X>
+                    </Button>
                 )}
             </div>
         </div>
 
 
         
-
-
-
         {/* Transactions table */}
         <div className='rounded-md border'>            
             <Table>
