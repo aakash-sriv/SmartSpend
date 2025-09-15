@@ -108,11 +108,40 @@ export async function bulkDeleteTransactions(transactionIds) {
                 userId : user.id ,
             },
         });
-        const accountBalanceChanges = transactionIds.reduce((acc , transaction) => {
-            
-        })
+        const accountBalanceChanges = transactions.reduce((acc , transaction) => {
+            const change = transaction.type === "EXPENSE" 
+            ? transaction.amount
+            : -transaction.amount;
 
+            acc[transaction.accountId] = (acc[transaction.accountId] || 0) + change;
+            return acc;
+        } , {});
+
+        //Delete transactions and update account balance in a transaction
+        await db.$transaction(async (tx) => {
+            //delete transactions
+            await tx.transaction.deleteMany({
+                where: {
+                    id: { in : transactionIds },
+                    userId : user.id,
+                },
+            });
+            //update account balances
+            for(const [accountId , balanceChange] of Object.entries(accountBalanceChanges)) {
+                await tx.account.update({
+                    where: { id: accountId , userId : user.id },
+                    data: {
+                        balance: {
+                            increment: balanceChange,
+                        },
+                    },
+                });
+            }
+        });
+        revalidatePath("/dashboard");        
+        revalidatePath("/account/[id]");
+        return { success: true };
     } catch (error) {
-        
+        return { success: false , error: error.message }
     }
 }

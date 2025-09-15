@@ -1,5 +1,6 @@
 "use client";
 
+import { bulkDeleteTransactions } from '@/actions/account';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox'
@@ -9,11 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { categoryColors } from '@/data/categories';
+import useFetch from '@/hooks/use-fetch';
 import { format } from 'date-fns/format';
 import { se } from 'date-fns/locale/se';
 import { ChevronDown, ChevronUp, Clock, MoreHorizontal, RefreshCw, Search, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { toast } from 'sonner';
 import { set } from 'zod';
 import { fi } from 'zod/v4/locales';
 
@@ -39,6 +42,15 @@ const Transactiontable = ({transactions}) => {
     const[searchTerm , setSearchTerm] = useState("");
     const[typeFilter ,setTypeFilter ] = useState("");
     const[recurringFilter , setRecurringFilter] = useState("");
+
+
+    // usefetch hook for delete
+
+    const {
+        data : deleted,  
+        loading : deleteLoading , 
+        fn : deleteFn ,
+    } = useFetch(bulkDeleteTransactions);
 
 
     const filteredAndSortedTransactions = useMemo(() => {
@@ -121,9 +133,19 @@ const Transactiontable = ({transactions}) => {
     //         : filteredAndSortedTransactions.map((transaction) => transaction.id)    
     //     );
     // };
-    const handleBulkDelete = () => {
-
+    const handleBulkDelete = async () => {
+        if(!window.confirm(`Are you sure you want to delete ${selectedIds.length} transactions? This action cannot be undone.`)
+        ){
+            return;
+        }
+        await deleteFn(selectedIds);
     };
+
+    useEffect(() => {
+        if(deleted && !deleteLoading){
+            toast.error(`${deleted.length} transactions deleted`);
+        }
+    }, [deleted , deleteLoading]);
 
 
     const handleClearFilters = () => {
