@@ -16,6 +16,7 @@ import { se } from 'date-fns/locale/se';
 import { ChevronDown, ChevronUp, Clock, MoreHorizontal, RefreshCw, Search, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react'
+import { BarLoader } from 'react-spinners';
 import { toast } from 'sonner';
 import { set } from 'zod';
 import { fi } from 'zod/v4/locales';
@@ -143,9 +144,13 @@ const Transactiontable = ({transactions}) => {
 
     useEffect(() => {
         if(deleted && !deleteLoading){
-            toast.error(`${deleted.length} transactions deleted`);
-        }
-    }, [deleted , deleteLoading]);
+        
+        toast.success('Transactions deleted successfully.');
+
+        setSelectedIds([]);
+
+        router.refresh();        }
+    }, [deleted , deleteLoading , router]);
 
 
     const handleClearFilters = () => {
@@ -157,6 +162,9 @@ const Transactiontable = ({transactions}) => {
 
   return (
     <div className='space-y-4'>
+        {deleteLoading &&(
+            <BarLoader className="mt-4" width={"100%"} color="#9333ea" />
+        )}
         {/* Filter */}
 
         <div className='flex flex-col sm:flex-row md:flex-row md:items-center justify-between gap-4'>
@@ -294,7 +302,7 @@ const Transactiontable = ({transactions}) => {
                                 />
                             </TableCell>
                             <TableCell>
-                                {format(new Date(transaction.date) , "pp")}
+                                {format(new Date(transaction.date) , "dd MMMM yy")}
                             </TableCell>
                             <TableCell>{transaction.description}</TableCell>
                             <TableCell className={`capitalize`}>
@@ -332,7 +340,7 @@ const Transactiontable = ({transactions}) => {
                                                     <div className='font-medium'>Next Date:</div>
                                                     <div>
                                                         {format(
-                                                            new Date(transaction.nextRecurringDate),"pp"
+                                                            new Date(transaction.nextRecurringDate),"dd-MM-yyyy"
                                                         )}
                                                     </div>
                                                 </div>
@@ -354,16 +362,16 @@ const Transactiontable = ({transactions}) => {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent>
-                                        <DropdownMenuLabel
+                                        <DropdownMenuItem
                                             onClick = {() => 
                                             router.push(`/transaction/create?edit=${transaction.id}`
                                              )}
                                         >     
                                             Edit
-                                        </DropdownMenuLabel>
+                                        </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem className={`text-destructive`}
-                                            // onClick = {() => deleteFn([transaction.id])}
+                                            onClick = {() => deleteFn([transaction.id])}
                                         >
                                             Delete
                                         </DropdownMenuItem>                                        

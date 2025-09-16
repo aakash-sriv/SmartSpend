@@ -108,14 +108,28 @@ export async function bulkDeleteTransactions(transactionIds) {
                 userId : user.id ,
             },
         });
-        const accountBalanceChanges = transactions.reduce((acc , transaction) => {
-            const change = transaction.type === "EXPENSE" 
-            ? transaction.amount
-            : -transaction.amount;
+        // const accountBalanceChanges = transactions.reduce((acc , transaction) => {
+        //     const change = transaction.type === "EXPENSE" 
+        //     ? transaction.amount
+        //     : -transaction.amount;
+
+        //     acc[transaction.accountId] = (acc[transaction.accountId] || 0) + change;
+        //     return acc;
+        // } , {});
+
+        const accountBalanceChanges = transactions.reduce((acc, transaction) => {
+        const amount = typeof transaction.amount?.toNumber === "function"
+            ? transaction.amount.toNumber()
+            : Number(transaction.amount || 0);
+
+        const change = transaction.type === "EXPENSE" 
+            ? amount 
+            : -amount;
 
             acc[transaction.accountId] = (acc[transaction.accountId] || 0) + change;
             return acc;
-        } , {});
+        }, {});
+
 
         //Delete transactions and update account balance in a transaction
         await db.$transaction(async (tx) => {
