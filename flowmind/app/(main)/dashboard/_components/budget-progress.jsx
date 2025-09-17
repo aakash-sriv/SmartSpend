@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card,  CardContent, CardDescription,  CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input';
-import { Check, X } from 'lucide-react';
+import { Check, PencilIcon, X } from 'lucide-react';
 import React, { useState } from 'react'
 
 const BudgetProgress  = ({ initialBudget , currentExpenses }) => {
@@ -61,6 +61,15 @@ const BudgetProgress  = ({ initialBudget , currentExpenses }) => {
                       : "No budget set"
                     }
                   </CardDescription>
+
+                  <Button
+                    variant = "ghost"
+                    size = "icon"
+                    onClick={() => setIsEditing(true)}
+                    className="h-6 w-6"
+                  >
+                    <PencilIcon className='h-3 w-3'/> 
+                  </Button>
                 </>
               )}
         </div>
