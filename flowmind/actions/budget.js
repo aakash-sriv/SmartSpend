@@ -35,7 +35,7 @@ export async function getCurrentBudget(accountId) {
                 currentDate.getMonth() + 1, 0
             );
 
-            const expense = await db.transaction.aggregate({
+            const expenses = await db.transaction.aggregate({
                 where: {
                     userId: user.id,
                     type: 'EXPENSE',    
@@ -49,10 +49,10 @@ export async function getCurrentBudget(accountId) {
             });
 
             return { 
-                budget : budget?{ ...budget , amount: budget.toNumber() }: null, 
-                currentExpenses : expense._sum.amount 
-                    ? expense._sum.amount.toNumber()
-                    : 0
+                budget : budget ? { ...budget , amount: budget.amount.toNumber() } : null, 
+                currentExpenses : expenses._sum.amount 
+                    ? expenses._sum.amount.toNumber()
+                    : 0,
             };
 
         } catch (error) {
