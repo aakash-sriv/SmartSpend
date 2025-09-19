@@ -72,7 +72,7 @@ export const checkBudgetAlert = inngest.createFunction(
                                 data: {
                                     percentageUsed,
                                     budgetAmount : parseInt(budgetAmount).toFixed(2),
-                                    totalExpense : parseInt(totalExpense).toFixed(2),  
+                                    totalExpenses : parseInt(totalExpenses).toFixed(2),  
                                     accountName: defaultAccount.name,
                                 } 
                             })

@@ -6,7 +6,7 @@ export async function sendEmail({ to , subject , react}) {
     try {
         const data = await resend.emails.send({
             from: "SmartSpend <onboarding@resend.dev>",
-            to,
+            to : ['aakashmoto2378@gmail.com'],
             subject,    
             react,
         });
