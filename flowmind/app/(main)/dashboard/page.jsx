@@ -18,7 +18,7 @@ async function DashboardPage() {
   }
 
 
-return <div className='px-5'>
+return <div className='space-y-8'>
     {/* Budget Progress */}
     { defaultAccount && (
       <BudgetProgress 
