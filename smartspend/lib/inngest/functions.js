@@ -64,7 +64,8 @@ export const checkBudgetAlert = inngest.createFunction(
                     )){
                         //Send Email
                         await sendEmail({
-                            to: budget.user.email,
+                            // budget.user.email
+                            to:  "aakashsriv06@gmail.com",
                             subject: `Budget Alert: Approaching Your Limit of ${defaultAccount.name}`,
                             react : EmailTemplate({
                                 userName: budget.user.name ,
