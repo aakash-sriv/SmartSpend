@@ -67,7 +67,7 @@ export const checkBudgetAlert = inngest.createFunction(
                             to: budget.user.email,
                             subject: `Budget Alert: Approaching Your Limit of ${defaultAccount.name}`,
                             react : EmailTemplate({
-                                userName: budget.user.name || "",
+                                userName: budget.user.name ,
                                 type: "budget-alert",  
                                 data: {
                                     percentageUsed,
