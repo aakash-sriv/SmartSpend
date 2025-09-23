@@ -46,7 +46,7 @@ export async function createTransaction(data){
                     ...data , 
                     userId: user.id,
                     nextRecurringDate : data.isRecurring && data.recurringInterval
-                    ?calculateNextRecurringdate(data.date , data.recurringInterval)
+                    ?calculateNextRecurringDate(data.date , data.recurringInterval)
                     : null
                 }
             });

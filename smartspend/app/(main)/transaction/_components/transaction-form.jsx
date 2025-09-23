@@ -4,10 +4,14 @@ import { createTransaction } from '@/actions/transaction';
 import { transactionSchema } from '@/app/lib/schema';
 import CreateAccountDrawer from '@/components/create-account-drawer';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import useFetch from '@/hooks/use-fetch';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from 'date-fns/format';
+import { CalendarIcon } from 'lucide-react';
 import { register } from 'next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup';
 import React from 'react'
 import { useForm } from 'react-hook-form';
@@ -64,7 +68,7 @@ const AddTransactionForm = ({accounts , categories}) => {
       </div>
 
     <div className='grid gap-6 md:grid-cols-2'>
-      <div className='space-y-6'>
+      <div className='space-y-2'>
         <label className='text-sm font-medium'>Amount</label>
         <Input 
           type="number"
@@ -77,7 +81,7 @@ const AddTransactionForm = ({accounts , categories}) => {
         )}
       </div>
 
-      <div className='space-y-6'>
+      <div className='space-y-2'>
         <label className='text-sm font-medium'>Account</label>
         <Select 
           onValueChange={(value) => setValue("accountId" , value)}
@@ -103,13 +107,13 @@ const AddTransactionForm = ({accounts , categories}) => {
           </SelectContent>
         </Select>
 
-        {errors.type && (
-          <p className='text-sm text-red-500'>{errors.type.message}</p>
+        {errors.accountId && (
+          <p className='text-sm text-red-500'>{errors.accountId.message}</p>
         )}
       </div>
     </div>
 
-      <div className='space-y-6'>
+      <div className='space-y-2'>
         <label className='text-sm font-medium'>Category</label>
         <Select 
           onValueChange={(value) => setValue("category" , value)}
@@ -127,10 +131,42 @@ const AddTransactionForm = ({accounts , categories}) => {
           </SelectContent>
         </Select>
 
-        {errors.type && (
-          <p className='text-sm text-red-500'>{errors.type.message}</p>
+        {errors.category && (
+          <p className='text-sm text-red-500'>{errors.category.message}</p>
         )}
       </div>
+
+
+      <div className='space-y-2'>
+        <label className='text-sm font-medium'>Date</label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full pl-3 text-left font-normal"
+            >
+              {date ? format(date ,"PPP") : <span>Pick a date</span>}
+              <CalendarIcon className="ml-auto h-4 w-4 opacity-50 cursor-pointer"/>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode ="single"
+              selected={date}
+              onSelect={(date => setValue("date" , date))}
+              disabled={(date => 
+                date > new Date() || date < new Date("1990-01-01"))
+              }
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+
+        {errors.date && (
+          <p className='text-sm text-red-500'>{errors.date.message}</p>
+        )}
+      </div>
+
     </form>
   )
 }
