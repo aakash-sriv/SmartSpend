@@ -14,10 +14,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns/format';
 import { CalendarIcon } from 'lucide-react';
 import { register } from 'next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup';
+import { useRouter } from 'next/navigation';
 import React from 'react'
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 const AddTransactionForm = ({accounts , categories}) => {
+  const router = useRouter();
 
   const {register , setValue , handleSubmit ,formState:{errors} , watch , getValues , reset } 
   = useForm({
@@ -46,7 +50,26 @@ const AddTransactionForm = ({accounts , categories}) => {
     (category) => category.type === type
   )
 
-  return ( <form className='space-y-6'>
+  const onSubmit = async (data) => {
+    const formData = {
+      ...data ,
+      amount: parseFloat(data.amount)
+    }
+    transactionFn(formData)
+  }
+
+  useEffect(() => {
+    if(transactionResult?.success && !transactionLoading){
+      toast.success("Transaction created successfully");
+      reset();
+      router.push(`/account/${transactionResult.data.accountId}`)
+    }
+  } ,[transactionLoading , transactionResult])
+
+  return ( <form 
+    className='space-y-6'
+    onSubmit={handleSubmit(onSubmit)}
+  >
         {/* AI Reciept Scanner */}
       <div className='space-y-6'>
         <label className='text-sm font-medium'>Type</label>
@@ -95,6 +118,7 @@ const AddTransactionForm = ({accounts , categories}) => {
              {accounts.map((account) => (
               <SelectItem key={account.id} value={account.id}>
                 {account.name} (₹{parseFloat(account.balance).toFixed(2)})
+                {account.isDefault && "(default)"}
               </SelectItem>
              ))}
             <CreateAccountDrawer>
@@ -213,16 +237,15 @@ const AddTransactionForm = ({accounts , categories}) => {
       </div>
     )}
 
-    <div>
+    <div className='flex gap-4'>
       <Button
         type="button"
-        variant="outline"
-        className="w-full"
+        variant="outline"        
         onClick={() => router.back()}
       >
         Cancel
       </Button>
-      <Button>
+      <Button type="submit" disabled={transactionLoading}>
         Create Transaction
       </Button>
     </div>
