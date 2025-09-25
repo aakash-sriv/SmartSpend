@@ -123,6 +123,8 @@
 }
 
 
+
+
 /* @layer utilities {
   .gradient {
     @apply bg-gradient-to-br from-blue-600 to-purple-600;
@@ -134,7 +136,7 @@
 } */
 @layer utilities {
   .gradient {
-    @apply bg-gradient-to-br from-[#752323] to-[#160101];
+    @apply bg-gradient-to-br from-[#832626] to-[#160101];
   }
 
   .gradient-title {

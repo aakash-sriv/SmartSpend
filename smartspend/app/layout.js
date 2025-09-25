@@ -1,12 +1,14 @@
 import Header from "@/components/header";
 import "./globals.css";
-import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import { Libre_Baskerville } from "next/font/google";
 
-
-const inter = Inter({ subsets: ["latin"] });
-
+const libreBaskerville = Libre_Baskerville({
+  subsets: ["latin"],        // choose character subsets
+  weight: ["400", "700"],    // choose which font weights you need
+  display: "swap",           // optional: for better font loading
+});
 export const metadata = {
   title: "SmartSpend",
   description: "Where finance meets management",
@@ -16,7 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.className}`}>
+        <body className={`${libreBaskerville.className} `}>
           {/* header */}
           <Header/>
           <main className="min-h-screen">
