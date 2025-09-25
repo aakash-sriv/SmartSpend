@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "FlowMind",
+  title: "SmartSpend",
   description: "Where finance meets management",
 };
 
