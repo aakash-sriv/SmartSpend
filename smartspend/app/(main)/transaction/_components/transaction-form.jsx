@@ -12,13 +12,14 @@ import { Switch } from '@/components/ui/switch';
 import useFetch from '@/hooks/use-fetch';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns/format';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Receipt } from 'lucide-react';
 import { register } from 'next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import ReceiptScanner from './receipt-scanner';
 
 const AddTransactionForm = ({accounts , categories}) => {
   const router = useRouter();
@@ -66,11 +67,22 @@ const AddTransactionForm = ({accounts , categories}) => {
     }
   } ,[transactionLoading , transactionResult])
 
+
+  const handleScanComplete = (scannedData) => {}
+
+
+
   return ( <form 
     className='space-y-6'
     onSubmit={handleSubmit(onSubmit)}
   >
         {/* AI Reciept Scanner */}
+        <ReceiptScanner onScanComplete={handleScanComplete}/>
+
+
+
+
+
       <div className='space-y-6'>
         <label className='text-sm font-medium'>Type</label>
         <Select 
