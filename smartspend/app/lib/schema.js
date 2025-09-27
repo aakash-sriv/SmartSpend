@@ -17,7 +17,7 @@ export const transactionSchema = z.object({
     category : z.string().min(1 ,"Category is required"),
     isRecurring : z.boolean().default(false),
     recurringInterval: z
-        .enum(["DAILY","WEEKLY","MOTHLY", "YEARLY"])
+        .enum(["DAILY","WEEKLY","MONTHLY", "YEARLY"])
         .optional(),
 }).superRefine((data , ctx) => {
     if(data.isRecurring && !data.recurringInterval){

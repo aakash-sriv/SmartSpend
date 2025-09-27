@@ -4,7 +4,8 @@ import { scanReceipt } from '@/actions/transaction';
 import { Button } from '@/components/ui/button';
 import useFetch from '@/hooks/use-fetch';
 import { Camera, Loader2 } from 'lucide-react';
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { toast } from 'sonner';
 
 const ReceiptScanner = ({onScanComplete}) => {
 const fileInputRef = useRef();
@@ -15,7 +16,21 @@ const fileInputRef = useRef();
         data : scannedData
     } = useFetch(scanReceipt);
 
-    const handleReceiptScan = () => {};
+    const handleReceiptScan = async (file) => {
+        if(file.size > 5 *1024 * 1024){
+            toast.error("File size should be less thsn 5MB");
+            return;
+        }
+        await scanReceiptFn(file);
+    };
+
+        useEffect(() => {
+            if(scannedData && !scanReceiptLoading){
+                onScanComplete(scannedData);
+                toast.success("Receipt scanned successfully")
+            }
+    }, [scanReceiptLoading , scannedData]);
+
 
   return (
     <div>
@@ -30,7 +45,12 @@ const fileInputRef = useRef();
                 if(file) handleReceiptScan(file)
             }}
         />
-        <Button className="w-full h-10 bg-[#2e0808]">
+        <Button 
+            className="w-full h-10 bg-[#2e0808] hover:bg-[#6d1616] text-white"
+            type="button"
+            onClick= {() => fileInputRef.current?.click()}
+            disabled ={scanReceiptLoading}
+        >
             {scanReceiptLoading ? (
                 <>
                     <Loader2 className="mr-2 animate-spin"/>
