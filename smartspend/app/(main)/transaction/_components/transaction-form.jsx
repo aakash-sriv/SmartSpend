@@ -25,7 +25,7 @@ const AddTransactionForm = ({
     accounts , 
     categories,
     editMode = false,
-    initialdata = null
+    initialData = null
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,17 +35,17 @@ const AddTransactionForm = ({
   = useForm({
     resolver:zodResolver(transactionSchema),
     defaultValues :
-      editMode && initialdata 
+      editMode && initialData 
         ? {
-            type: initialdata.type,
-            amount: initialdata.amount.toString(),
-            description: initialdata.description,
-            accountId: initialdata.accountId,
-            category: initialdata.category,
-            date: new Date(initialdata.date),
-            isRecurring: initialdata.isRecurring,
-            ...(initialdata.recurringInterval && {
-              recurringInterval: initialdata.recurringInterval,
+            type: initialData.type,
+            amount: initialData.amount.toString(),
+            description: initialData.description,
+            accountId: initialData.accountId,
+            category: initialData.category,
+            date: new Date(initialData.date),
+            isRecurring: initialData.isRecurring,
+            ...(initialData.recurringInterval && {
+              recurringInterval: initialData.recurringInterval,
             }),
           }
         : {
