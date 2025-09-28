@@ -1,9 +1,11 @@
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 import { format } from 'date-fns/format';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import React, { useState } from 'react'
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 const DashboardOverview = ({accounts , transactions}) => {
 
@@ -20,6 +22,48 @@ const DashboardOverview = ({accounts , transactions}) => {
       .sort((a , b) => new Date(b.date) - new Date(a.date))
       .slice(0,5);
 
+  //calculate expense breakdown for current month
+  const currentDate = new Date();
+  const currentMonthExpenses = accountTransactions.filter((t) => {
+    const transactionDate = new Date(t.date);
+    return (
+      t.type === "EXPENSE" &&
+      transactionDate.getMonth() === currentDate.getMonth() &&
+      transactionDate.getFullYear() === currentDate.getFullYear()
+    )
+  });
+
+  //group expenses by category
+  const expensesByCategory = currentMonthExpenses.reduce((acc , transaction) => {
+    const category = transaction.category;
+    if(!acc[category]) {
+      acc[category] = 0;      
+    }
+    acc[category] += transaction.amount;
+    return acc;
+  },{});
+
+  //format data for pie chart
+  const pieChartData = Object.entries(expensesByCategory).map(
+    ([category , amount]) => ({
+      name: category ,
+      value: amount,
+    })
+  );
+
+    const COLORS = [
+      "#FF6B9D", // Bright Pink
+      "#4ECDC4", // Bright Teal
+      "#45B7D1", // Bright Blue
+      "#96CEB4", // Bright Mint
+      "#FFEAA7", // Bright Yellow
+      "#DDA0DD", // Bright Plum
+      "#F093FB", // Bright Magenta
+      "#00D2FF", // Bright Cyan
+      "#A8E6CF", // Bright Green
+      "#FFB347", // Bright Orange
+      "#B19CD9", // Bright Lavender
+    ];
       return (<div className='grid gap-4 md:grid-cols-2'>
         <Card>
           <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-4`}>
@@ -45,14 +89,14 @@ const DashboardOverview = ({accounts , transactions}) => {
 
           </CardHeader>
           <CardContent>
-            <div>
+            <div className='space-y-4'>
               {recentTransactions.length === 0 ? (
                 <p className='text-center text-muted-foreground py-4'>
                   No recent transactions
                 </p>
               ) : (
                 recentTransactions.map((transaction) => {
-                  <div
+                  return <div
                     key={transaction.id}
                     className='flex items-center justify-between'
                   >
@@ -91,19 +135,44 @@ const DashboardOverview = ({accounts , transactions}) => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Card Title</CardTitle>
+            <CardTitle className="text-base font-normal">
+              Monthly Expense Breakdown
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p>Card Content</p>
+          <CardContent className={`p-0 pb-5`}>
+            {pieChartData.length === 0 ? (
+              <p className='text-center text-muted-foreground py-4'>
+                No expenses this month
+              </p>
+            ) : (
+              <div className='h-[300px]'>
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={pieChartData}
+                        cx="50%"
+                        cy="50%"
+                        dataKey="value"
+                        fill="#F12F67"
+                        outerRadius={80}
+                        label={({ name , value }) => `${name} : ₹${value.toFixed(2)}`}
+                      >
+                          {pieChartData.map((entry , index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          )) }
+                      </Pie>
+                      <Legend/>
+                    </PieChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </CardContent>          
         </Card>
       </div>
       )
-
-
-  return (
-    <div>DashboardOverview</div>
-  )
 }
 
 export default DashboardOverview
