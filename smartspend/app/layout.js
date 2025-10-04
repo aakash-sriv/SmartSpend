@@ -12,6 +12,9 @@ const libreBaskerville = Libre_Baskerville({
 export const metadata = {
   title: "SmartSpend",
   description: "Where finance meets management",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
