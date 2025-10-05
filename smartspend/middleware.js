@@ -5,6 +5,8 @@ const isProtectedRoute = createRouteMatcher([
   "/account(.*)",
   "/transaction(.*)",
 ])
+//no bot detection here
+// to avoid deployment issues
 
 export default clerkMiddleware(async(auth, req)=>{
   const {userId} = await auth();
