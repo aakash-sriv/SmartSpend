@@ -30,15 +30,23 @@ const HeroSection = () => {
   return (
     <div className="pb-20 px-4">
       <div className="container mx-auto text-center">
-        <h1 className="text-5xl md:text-8xl lg:text-[105px] pb-6 gradient-title">
-          Manage your finances <br /> with Intelligence
+        <h1
+          className="text-4xl md:text-8xl lg:text-[90px] pb-6
+                  gradient-title
+                  bg-[linear-gradient(90deg,#f53598,#630e1a,#f53598)]
+                  bg-[length:200%_100%]
+                  [background-position:0%_0%]
+                  animate-text-slide"
+        >
+          Smarter tracking. <br /> Smarter spending.
         </h1>
+
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
           An AI-powered financial management platform that helps you track , analyze and optimize your spending with real-time insights.
         </p>
         <div className="flex justify-center space-x-4">
           <Link href= "/dashboard">
-          <Button size="lg" className={`px-8 cursor-pointer`}>
+          <Button size="lg" className={`px-8 cursor-pointer bg-gradient-to-br from-[#da2268] to-[#6a0b0e] `}>
             Get started
           </Button>
           </Link>

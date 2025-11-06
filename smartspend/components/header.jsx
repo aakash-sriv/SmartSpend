@@ -22,17 +22,17 @@ const Header = async() => {
 
       <div className="flex items-center space-x-4 cursor-pointer">
         <SignedIn className="cursor-pointer">
-          <Link href={"/dashboard"} className="text-gray-600 hover:text-blue-600 flex items-center gap-2 cursor-pointer">
-            <Button variant="outline">
+          <Link href={"/dashboard"} className="bg-gradient-to-br from-[#da2268] to-[#6a0b0e] rounded-md text-gray-50 flex items-center gap-2 cursor-pointer">
+            <Button variant="outline ">
               <LayoutDashboard size={18} />
               <span className="hidden md:inline">Dashboard</span>
             </Button>
           </Link>
 
           <Link href={"/transaction/create"}>
-            <Button className="flex items-center gap-2 ">
+            <Button className="flex items-center gap-2 bg-gradient-to-br from-[#da2268] to-[#6a0b0e]">
               <PenBox size={18} alt={"transaction"} />
-              <span className="hidden md:inline cursor-pointer">Add Transaction</span>
+              <span className="hidden md:inline cursor-pointer ">Add Transaction</span>
             </Button>
           </Link>
         </SignedIn>

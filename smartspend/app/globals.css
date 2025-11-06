@@ -125,22 +125,16 @@
 
 
 
-/* @layer utilities {
-  .gradient {
-    @apply bg-gradient-to-br from-blue-600 to-purple-600;
-  }
 
-  .gradient-title {
-    @apply gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text;
-  }
-} */
+
+
 @layer utilities {
   .gradient {
     @apply bg-gradient-to-br from-[#832626] to-[#160101];
   }
 
   .gradient-title {
-    @apply bg-gradient-to-br from-[#932750] to-[#690451] font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text;
+    @apply bg-gradient-to-br from-[#f53598] to-[#870e1e] tracking-tighter pr-2 pb-2 text-transparent bg-clip-text  ;
   }
 }
 
@@ -156,4 +150,14 @@
 
 .hero-image.scrolled {
   transform: rotateX(0deg) scale(1) translateY(40px);
+}
+
+@keyframes text-slide {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 100%; }
+}
+
+
+@utility animate-text-slide {
+  animation: text-slide 6s ease-in-out infinite;
 }
