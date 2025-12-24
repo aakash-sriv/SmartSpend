@@ -1,3 +1,4 @@
+import { seedDemoData } from '@/actions/seed';
 import { getDashboardData, getUserAccounts } from '@/actions/dashboard';
 import CreateAccountDrawer from '@/components/create-account-drawer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,24 +8,31 @@ import AccountCard from './_components/account-card';
 import { getCurrentBudget } from '@/actions/budget';
 import BudgetProgress from './_components/budget-progress';
 import DashboardOverview from './_components/dashboard-overview';
+import { currentUser } from '@clerk/nextjs/server';
 
 async function DashboardPage() {
+  const user = await currentUser();
+
+  if (user?.emailAddresses?.[0]?.emailAddress === "dehet67222@nyfhk.com") {
+    await seedDemoData();
+  }
+
   const accounts = await getUserAccounts();
 
   const defaultAccount = accounts?.find((account) => account.isDefault);
 
   let budgetData = null;
-  if(defaultAccount) {
+  if (defaultAccount) {
     budgetData = await getCurrentBudget(defaultAccount.id);
   }
 
   const transactions = await getDashboardData();
 
 
-return <div className='space-y-8'>
+  return <div className='space-y-8'>
     {/* Budget Progress */}
-    { defaultAccount && (
-      <BudgetProgress 
+    {defaultAccount && (
+      <BudgetProgress
         initialBudget={budgetData?.budget}
         currentExpenses={budgetData?.currentExpenses || 0}
       />
@@ -32,7 +40,7 @@ return <div className='space-y-8'>
 
     {/*OverView */}
     <Suspense fallback={"Loading Overview..."}>
-      <DashboardOverview 
+      <DashboardOverview
         accounts={accounts}
         transactions={transactions || []}
       />
@@ -50,10 +58,10 @@ return <div className='space-y-8'>
         </Card>
       </CreateAccountDrawer>
 
-    {accounts.length > 0 &&
-      accounts?.map((account) => {
-        return <AccountCard key={account.id} account = {account} />;
-      })}
+      {accounts.length > 0 &&
+        accounts?.map((account) => {
+          return <AccountCard key={account.id} account={account} />;
+        })}
 
     </div>
   </div>

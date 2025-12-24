@@ -45,38 +45,38 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --radius: 0.75rem;
+  --background: #ECF4E8;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: #93BFC7;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #CBF3BB;
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
+  --muted: #ECF4E8;
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --accent: #ABE7B2;
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: #CBF3BB;
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
+  --ring: #93BFC7;
+  --chart-1: #ABE7B2;
+  --chart-2: #93BFC7;
+  --chart-3: #CBF3BB;
+  --chart-4: #ECF4E8;
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: #93BFC7;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent: #ABE7B2;
   --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-border: #CBF3BB;
+  --sidebar-ring: #93BFC7;
 }
 
 .dark {
@@ -86,28 +86,28 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: #ABE7B2;
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --secondary: #93BFC7;
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --accent: #CBF3BB;
+  --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
+  --ring: #93BFC7;
+  --chart-1: #ABE7B2;
+  --chart-2: #93BFC7;
+  --chart-3: #CBF3BB;
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: #93BFC7;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent: #ABE7B2;
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
@@ -117,8 +117,14 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Rounded buttons globally */
+  button {
+    @apply rounded-xl;
   }
 }
 
@@ -130,11 +136,20 @@
 
 @layer utilities {
   .gradient {
-    @apply bg-gradient-to-br from-[#832626] to-[#160101];
+    @apply bg-gradient-to-br from-[#93BFC7] to-[#ABE7B2];
   }
 
   .gradient-title {
-    @apply bg-gradient-to-br from-[#f53598] to-[#870e1e] tracking-tighter pr-2 pb-2 text-transparent bg-clip-text  ;
+    @apply bg-gradient-to-br from-[#93BFC7] to-[#ABE7B2] tracking-tighter pr-2 pb-2 text-transparent bg-clip-text;
+  }
+
+  /* Shadow utilities */
+  .card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(147, 191, 199, 0.1), 0 2px 4px -1px rgba(147, 191, 199, 0.06);
+  }
+
+  .button-shadow {
+    box-shadow: 0 2px 4px -1px rgba(147, 191, 199, 0.2), 0 1px 2px -1px rgba(147, 191, 199, 0.1);
   }
 }
 
@@ -153,8 +168,13 @@
 }
 
 @keyframes text-slide {
-  0%   { background-position: 0% 0%; }
-  100% { background-position: 200% 100%; }
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 200% 100%;
+  }
 }
 
 

@@ -7,7 +7,13 @@ import { useEffect, useRef } from "react";
 
 
 
+import { useSignIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 const HeroSection = () => {
+  const { signIn, isLoaded, setActive } = useSignIn();
+  const router = useRouter();
   const imageRef = useRef()
 
   useEffect(() => {
@@ -17,15 +23,36 @@ const HeroSection = () => {
       const scrollPosition = window.scrollY;
       const scrollThreshold = 100;
 
-      if(scrollPosition>scrollThreshold){
+      if (scrollPosition > scrollThreshold) {
         imageElement.classList.add("scrolled");
       } else {
         imageElement.classList.remove("scrolled");
       }
     };
-    window.addEventListener("scroll" , handleScroll);
-    return () => window.removeEventListener("scroll" , handleScroll);
-  } , []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleDemoLogin = async () => {
+    if (!isLoaded) return;
+
+    try {
+      const result = await signIn.create({
+        identifier: "dehet67222@nyfhk.com",
+        password: "smartspendpassword",
+      });
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        window.location.href = "/dashboard"; // Full page navigation to ensure Header updates
+      } else {
+        console.error(result);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      toast.error("Failed to login to demo account");
+    }
+  };
 
   return (
     <div className="pb-20 px-4">
@@ -33,7 +60,7 @@ const HeroSection = () => {
         <h1
           className="text-4xl md:text-8xl lg:text-[90px] pb-6
                   gradient-title
-                  bg-[linear-gradient(90deg,#f53598,#630e1a,#f53598)]
+                  bg-[linear-gradient(90deg,#93BFC7,#ABE7B2,#93BFC7)]
                   bg-[length:200%_100%]
                   [background-position:0%_0%]
                   animate-text-slide"
@@ -45,17 +72,20 @@ const HeroSection = () => {
           An AI-powered financial management platform that helps you track , analyze and optimize your spending with real-time insights.
         </p>
         <div className="flex justify-center space-x-4">
-          <Link href= "/dashboard">
-          <Button size="lg" className={`px-8 cursor-pointer bg-gradient-to-br from-[#da2268] to-[#6a0b0e] `}>
-            Get started
-          </Button>
+          <Link href="/dashboard">
+            <Button size="lg" className={`px-8 cursor-pointer bg-gradient-to-br from-[#93BFC7] to-[#ABE7B2] text-white`}>
+              Get started
+            </Button>
           </Link>
+          <Button size="lg" variant="outline" className="px-8" onClick={handleDemoLogin}>
+            Demo Login
+          </Button>
         </div>
         {/* {banner here} */}
         <div className="hero-image-wrapper">
           <div ref={imageRef} className="hero-image">
-            <Image 
-              src="/banner.png" 
+            <Image
+              src="/banner.png"
               width={1280}
               height={720}
               alt="Dashboard Preview"

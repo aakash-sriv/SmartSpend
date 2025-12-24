@@ -5,15 +5,15 @@ import Transactiontable from '../_ components/transaction-table';
 import { BarLoader } from 'react-spinners';
 import AccountChart from '../_ components/account-chart';
 
-const AccountsPage = async ({params}) => {
+const AccountsPage = async ({ params }) => {
+  const { id } = await params;
+  const accountData = await getAccountWithTransactions(id);
 
-    const accountData = await getAccountWithTransactions(params.id);
+  if (!accountData) {
+    notFound();
+  }
 
-    if(!accountData){
-        notFound();
-    }
-    
-    const { transactions , ...account } = accountData;
+  const { transactions, ...account } = accountData;
   return <div className='space-y-8 px-5'>
     <div className='flex gap-4 items-end justify-between'>
       <div>
@@ -33,15 +33,15 @@ const AccountsPage = async ({params}) => {
 
 
     {/* Chart section */}
-    <Suspense 
-      fallback={<BarLoader className="mt-4" width= {"100%"} color= " #9333ea" />}
+    <Suspense
+      fallback={<BarLoader className="mt-4" width={"100%"} color=" #9333ea" />}
     >
       <AccountChart transactions={transactions} />
     </Suspense>
 
     {/* Transaction  data */}
-    <Suspense 
-      fallback={<BarLoader className="mt-4" width= {"100%"} color= " #9333ea" />}
+    <Suspense
+      fallback={<BarLoader className="mt-4" width={"100%"} color=" #9333ea" />}
     >
       <Transactiontable transactions={transactions} />
     </Suspense>
