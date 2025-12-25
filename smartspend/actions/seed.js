@@ -25,17 +25,37 @@ export async function seedDemoData() {
             where: { userId: dbUser.id },
         });
 
-        const accountCount = await db.account.count({
+        let accountCount = await db.account.count({
             where: { userId: dbUser.id },
         });
 
-        // If we have data and exactly one account, we are good.
-        // TEMPORARILY DISABLED TO FORCE RE-SEED WITH NEW BUDGET (10000)
-        // if (transactionCount > 10 && accountCount === 1) {
-        //     return { success: true, message: "Data already seeded" };
-        // }
+        // If we have data and at least one account, check for cleanup
+        if (transactionCount > 10 && accountCount >= 1) {
+            // Clean up: Delete any extra accounts created by demo user (keep only the first/default)
+            const accounts = await db.account.findMany({
+                where: { userId: dbUser.id },
+                orderBy: { createdAt: 'asc' }, // Keep the oldest (original demo account)
+            });
 
-        // Clean slate: If multiple accounts (duplicates) or no data, reset everything
+            // If more than 1 account exists, delete the extras
+            if (accounts.length > 1) {
+                const accountIdsToDelete = accounts.slice(1).map(acc => acc.id); // Keep first, delete rest
+
+                // Delete transactions for these extra accounts
+                await db.transaction.deleteMany({
+                    where: { accountId: { in: accountIdsToDelete } }
+                });
+
+                // Delete the extra accounts
+                await db.account.deleteMany({
+                    where: { id: { in: accountIdsToDelete } }
+                });
+            }
+
+            return { success: true, message: "Data already seeded, extra accounts cleaned up" };
+        }
+
+        // Clean slate: If no data, reset everything and seed
         await db.transaction.deleteMany({ where: { userId: dbUser.id } });
         await db.account.deleteMany({ where: { userId: dbUser.id } });
         await db.budget.deleteMany({ where: { userId: dbUser.id } });
