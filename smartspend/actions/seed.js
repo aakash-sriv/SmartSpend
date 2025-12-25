@@ -2,7 +2,6 @@
 
 import { db } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
 
 export async function seedDemoData() {
     const user = await currentUser();
@@ -31,9 +30,10 @@ export async function seedDemoData() {
         });
 
         // If we have data and exactly one account, we are good.
-        if (transactionCount > 10 && accountCount === 1) {
-            return { success: true, message: "Data already seeded" };
-        }
+        // TEMPORARILY DISABLED TO FORCE RE-SEED WITH NEW BUDGET (10000)
+        // if (transactionCount > 10 && accountCount === 1) {
+        //     return { success: true, message: "Data already seeded" };
+        // }
 
         // Clean slate: If multiple accounts (duplicates) or no data, reset everything
         await db.transaction.deleteMany({ where: { userId: dbUser.id } });
@@ -53,10 +53,16 @@ export async function seedDemoData() {
                 },
             });
 
-            // 2. Create Budget
-            await tx.budget.create({
-                data: {
-                    amount: 2000.0,
+            // 2. Create/Update Budget (upsert to avoid unique constraint error)
+            await tx.budget.upsert({
+                where: {
+                    userId: dbUser.id,
+                },
+                update: {
+                    amount: 10000.0,
+                },
+                create: {
+                    amount: 10000.0,
                     userId: dbUser.id,
                 },
             });
@@ -125,7 +131,8 @@ export async function seedDemoData() {
             });
         });
 
-        revalidatePath("/dashboard");
+        // revalidatePath removed - causes error when called during render
+        // Dashboard will refresh automatically on navigation
         return { success: true, message: "Demo data seeded successfully" };
     } catch (error) {
         console.error("Error seeding demo data:", error);

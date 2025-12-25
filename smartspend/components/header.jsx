@@ -11,8 +11,8 @@ const Header = async () => {
   const user = await currentUser();
   const isDemoUser = user?.emailAddresses?.[0]?.emailAddress === "dehet67222@nyfhk.com";
 
-  return <div className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
-    <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+  return <div className="fixed top-0 w-full bg-[#ECF4E8]/80 backdrop-blur-md z-50 border-b">
+    <nav className="container mx-auto px-4 py-2 flex items-center justify-between">
       <Link href="/">
         <Image
           src={"/logo1.png"}
@@ -25,7 +25,7 @@ const Header = async () => {
 
       <div className="flex items-center space-x-4">
         <SignedIn>
-          <Link href={"/dashboard"} className="bg-gradient-to-br from-[#93BFC7] to-[#ABE7B2] rounded-md text-white flex items-center gap-2 cursor-pointer">
+          <Link href={"/dashboard"} className="bg-gradient-to-br from-[#93BFC7] to-[#ABE7B2] rounded-xl text-white flex items-center gap-2 cursor-pointer">
             <Button variant="outline " className="text-white hover:text-gray-100 border-none">
               <LayoutDashboard size={18} />
               <span className="hidden md:inline">Dashboard</span>

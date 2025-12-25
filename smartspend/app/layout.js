@@ -19,20 +19,38 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        elements: {
+          // Modal/Card background
+          modalContent: "bg-[#ECF4E8]",
+          card: "bg-[#ECF4E8]",
+          // Header
+          headerTitle: "text-[#439A86]",
+          headerSubtitle: "text-[#439A86]",
+          // Form elements
+          formButtonPrimary: "bg-gradient-to-br from-[#93BFC7] to-[#ABE7B2] hover:opacity-90",
+          formFieldInput: "border-[#CBF3BB] focus:border-[#93BFC7]",
+          // Footer
+          footerActionLink: "text-[#93BFC7] hover:text-[#ABE7B2]",
+          // Social buttons
+          socialButtonsBlockButton: "border-[#CBF3BB] hover:bg-[#CBF3BB]/20",
+        },
+      }}
+    >
       <html lang="en">
         <body className={`${libreBaskerville.className} `}>
           {/* header */}
-          <Header/>
+          <Header />
           <main className="min-h-screen">
-          {children}
+            {children}
           </main>
           <Toaster richColors />
           {/* footer */}
-          <footer className="bg-blue-50 py-12">
-            <div className="container mx-auto px-4 text-center text-gray-600">
+          <footer className="bg-blue-50 py-8 text-lg">
+            <div className="container mx-auto px-4 text-left text-foreground">
               <p>
-                Made with 💝 by Aakash
+                © 2025 SmartSpend by Aakash.
               </p>
             </div>
           </footer>
