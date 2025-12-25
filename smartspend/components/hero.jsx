@@ -82,7 +82,7 @@ const HeroSection = () => {
           </Button>
         </div>
         {/* {banner here} */}
-        <div className="hero-image-wrapper">
+        <div className="hero-image-wrapper py-10">
           <div ref={imageRef} className="hero-image">
             <Image
               src="/banner.png"
