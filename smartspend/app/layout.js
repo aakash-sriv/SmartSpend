@@ -15,6 +15,17 @@ export const metadata = {
   icons: {
     icon: "/favicon.png",
   },
+  openGraph: {
+    title: "SmartSpend",
+    description: "Where finance meets management",
+    images: ["https://smart-spend-ak.vercel.app/og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SmartSpend",
+    description: "Where finance meets management",
+    images: ["https://smart-spend-ak.vercel.app/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }) {
